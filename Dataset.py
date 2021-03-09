@@ -26,7 +26,7 @@ class TrafficDataset(data.Dataset):
         image = Image.open(ID)
         
         rcrop = transforms.RandomResizedCrop(size=(self.width, self.height), scale=(0.08, 1.0))
-        if self.fns[0]:
+        if self.fns[0] and random.random() > 0.5:
             image = rcrop(image)
         #Resize
         resize = transforms.Resize(size=(self.width, self.height))
@@ -35,18 +35,18 @@ class TrafficDataset(data.Dataset):
 
         # ColorJitter
         color = transforms.ColorJitter(brightness=.05, contrast=.05, hue=.05, saturation=.05)
-        if self.fns[1]:
+        if self.fns[1] and random.random() > 0.5:
             image = color(image)
 
         raffine = transforms.RandomAffine(degrees = alpha, translate=beta, scale=gamma, shear=delta)
-        if self.fns[2]:
+        if self.fns[2] and random.random() > 0.5:
             image = raffine(image)
 
         gblur = transforms.GaussianBlur(kernel_size, sigma=(0.1, 2.0))
-        if self.fns[3]:
+        if self.fns[3] and random.random() > 0.5:
             image = gblur(image)
 
-        if self.fns[4]:
+        if self.fns[4] and random.random() > 0.5:
             image = transforms.functional.adjust_sharpness(image, sharpness_factor: float_value)
 
         return image
